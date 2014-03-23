@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Media.Imaging;
+//using System.Windows.Media.Imaging;
 
 namespace Ultima
 {
@@ -432,6 +432,7 @@ namespace Ultima
 			Frames.Clear();
 		}
 
+#if false
 		//Soulblighter Modification
 		public void GetGifPalette(Bitmap bit)
 		{
@@ -474,6 +475,7 @@ namespace Ultima
 				}
 			}
 		}
+#endif
 
 		public unsafe void GetImagePalette(Bitmap bit)
 		{
