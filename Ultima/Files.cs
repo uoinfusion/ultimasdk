@@ -278,7 +278,7 @@ namespace Ultima
 			@"Origin Worlds Online\Ultima Online Samurai Empire BETA\3d\1.0", 
 			@"Origin Worlds Online\Ultima Online Samurai Empire\2d\1.0", 
 			@"Origin Worlds Online\Ultima Online Samurai Empire\3d\1.0",
-			@"Origin Worlds Online\Ultima Online\KR Legacy Beta", 
+			@"Origin Worlds Online\Ultima Online\KR Legacy Beta",
 			@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic",
 			@"Electronic Arts\EA Games\Ultima Online Classic",
 		};
