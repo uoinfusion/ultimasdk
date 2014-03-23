@@ -60,6 +60,7 @@ namespace Ultima
 			"artlegacymul.uop",
 			"body.def",
 			"bodyconv.def",
+			"client.exe",
 			"cliloc.custom1",
 			"cliloc.custom2",
 			"cliloc.deu",
@@ -157,6 +158,7 @@ namespace Ultima
 			"unifont10.mul",
 			"unifont11.mul",
 			"unifont12.mul",
+			"uotd.exe",
 			"verdata.mul"
 		};
 
@@ -241,8 +243,7 @@ namespace Ultima
 		/// <returns>The absolute path to <paramref name="file" /> -or- <c>null</c> if <paramref name="file" /> was not found.</returns>
 		public static string GetFilePath(string file)
 		{
-			if (MulPath.Count > 0)
-			{
+			if (MulPath.Count > 0) {
 				string path = "";
 				if (MulPath.ContainsKey(file.ToLower()))
 					path = MulPath[file.ToLower()];
@@ -253,6 +254,7 @@ namespace Ultima
 				if (File.Exists(path))
 					return path;
 			}
+
 			return null;
 		}
 
@@ -276,7 +278,9 @@ namespace Ultima
 			@"Origin Worlds Online\Ultima Online Samurai Empire BETA\3d\1.0", 
 			@"Origin Worlds Online\Ultima Online Samurai Empire\2d\1.0", 
 			@"Origin Worlds Online\Ultima Online Samurai Empire\3d\1.0",
+			@"Origin Worlds Online\Ultima Online\KR Legacy Beta", 
 			@"Electronic Arts\EA Games\Ultima Online Stygian Abyss Classic",
+			@"Electronic Arts\EA Games\Ultima Online Classic",
 		};
 
 		static readonly string[] knownRegPathkeys = new string[] { 
@@ -288,11 +292,11 @@ namespace Ultima
 		private static string LoadDirectory()
 		{
 			string dir = null;
-			for (int i = 0; i < knownRegkeys.Length; ++i)
+			for (int i = knownRegkeys.Length - 1; i >= 0; i--)
 			{
 				string exePath;
 
-				if (IntPtr.Size == 8)
+				if (Environment.Is64BitOperatingSystem)
 					exePath = GetPath(string.Format(@"Wow6432Node\{0}", knownRegkeys[i]));
 				else
 					exePath = GetPath(knownRegkeys[i]);
@@ -324,8 +328,16 @@ namespace Ultima
 				foreach (string pathkey in knownRegPathkeys)
 				{
 					path = key.GetValue(pathkey) as string;
-					if (((path == null) || (path.Length <= 0)) || (!System.IO.Directory.Exists(path) && !File.Exists(path)))
+
+					if ((path == null) || (path.Length <= 0))
 						continue;
+
+					if (pathkey == "InstallDir")
+						path = path + @"\";
+
+					if (!System.IO.Directory.Exists(path) && !File.Exists(path))
+						continue;
+
 					break;
 				}
 
