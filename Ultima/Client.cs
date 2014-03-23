@@ -485,56 +485,58 @@ namespace Ultima
 		{
 			return GetFilePath( String.Format( format, args ) );
 		}
-        
-        private static string GetExePath(string subName)
-        {
-            try
-            {
-                RegistryKey key = Registry.LocalMachine.OpenSubKey(string.Format(@"SOFTWARE\{0}", subName));
 
-                if (key == null)
-                {
-                    key = Registry.CurrentUser.OpenSubKey(string.Format(@"SOFTWARE\{0}", subName));
-
-                    if (key == null)
-                    {
-                        return null;
-                    }
-                }
-
-                string path = key.GetValue("ExePath") as string;
-
-		if (((path == null) || (path.Length <= 0)) || (!Directory.Exists(path) && !File.Exists(path)))
+		private static string GetExePath(string subName)
 		{
-			path = key.GetValue("Install Dir") as string;
-
-			if (((path == null) || (path.Length <= 0)) || (!Directory.Exists(path) && !File.Exists(path)))
+			try
 			{
-				path = key.GetValue("InstallDir") as string;
+				RegistryKey key = Registry.LocalMachine.OpenSubKey(string.Format(@"SOFTWARE\{0}", subName));
+
+				if (key == null)
+				{
+					key = Registry.CurrentUser.OpenSubKey(string.Format(@"SOFTWARE\{0}", subName));
+
+					if (key == null)
+					{
+						return null;
+					}
+				}
+
+				string path = key.GetValue("ExePath") as string;
 
 				if (((path == null) || (path.Length <= 0)) || (!Directory.Exists(path) && !File.Exists(path)))
 				{
-					return null;
-				} else {
-					path = path + @"\";
+					path = key.GetValue("Install Dir") as string;
+
+					if (((path == null) || (path.Length <= 0)) || (!Directory.Exists(path) && !File.Exists(path)))
+					{
+						path = key.GetValue("InstallDir") as string;
+
+						if (((path == null) || (path.Length <= 0)) || (!Directory.Exists(path) && !File.Exists(path)))
+						{
+							return null;
+						}
+						else
+						{
+							path = path + @"\";
+						}
+					}
 				}
+
+				path = Path.GetDirectoryName(path);
+
+				if ((path == null) || !Directory.Exists(path))
+				{
+					return null;
+				}
+
+				return path;
+			}
+			catch
+			{
+				return null;
 			}
 		}
-
-                path = Path.GetDirectoryName(path);
-
-                if ((path == null) || !Directory.Exists(path))
-                {
-                    return null;
-                }
-
-                return path;
-            }
-            catch
-            {
-                return null;
-            }
-        }
 
         private static List<string> LoadDirectories()
         {
