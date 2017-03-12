@@ -1,4 +1,6 @@
+using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Win32.SafeHandles;
 
 namespace Ultima
@@ -38,15 +40,27 @@ namespace Ultima
 		[DllImport("User32")]
 		public static extern int OemKeyScan(int wOemChar);
 
-		[DllImport("user32")]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder strText, int maxCount);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int GetWindowTextLength(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+
+        [DllImport("user32")]
 		public static extern ClientWindowHandle FindWindowA(string lpClassName, string lpWindowName);
 
-		/// <summary>
-		/// Swaps from Big to LittleEndian and vise versa
-		/// </summary>
-		/// <param name="x"></param>
-		/// <returns></returns>
-		public static short SwapEndian(short x)
+        // Delegate to filter which windows to include 
+        public delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+        /// <summary>
+        /// Swaps from Big to LittleEndian and vise versa
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static short SwapEndian(short x)
 		{
 			ushort y = (ushort)x;
 			return (short)((y >> 8) | (y << 8));
