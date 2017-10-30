@@ -327,7 +327,7 @@ namespace Ultima
 		public static LocationPointer LocationPointer
 		{
 			get { return m_LocationPointer; }
-			set { m_LocationPointer = value; }
+			set => m_LocationPointer = value;
 		}
 
 		/// <summary>
@@ -343,13 +343,15 @@ namespace Ultima
 
 				return m_Handle;
 			}
+
+            set => m_Handle = value;
 		}
 
-		/// <summary>
-		/// Whether or not the Client is currently running.
-		/// <seealso cref="ClientHandle" />
-		/// </summary>
-		public static bool Running
+        /// <summary>
+        /// Whether or not the Client is currently running.
+        /// <seealso cref="ClientHandle" />
+        /// </summary>
+        public static bool Running
 		{
 			get
 			{
