@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net47</TargetFrameworks>
     <AssemblyTitle>Ultima SDK</AssemblyTitle>
     <Product>Ultima SDK</Product>
     <Description>Ultima SDK</Description>
@@ -12,6 +12,11 @@
     <PostBuildEvent />
     <PostBuildEvent />
   </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net47'">
+    <DefineConstants>NET47;NETFULL</DefineConstants>
+  </PropertyGroup>
+  
   <PropertyGroup>
     <AssemblyOriginatorKeyFile />
   </PropertyGroup>
