@@ -193,7 +193,7 @@ namespace Ultima
 
 	}
 
-	public sealed class SpeechEntry
+	public sealed class SpeechEntry : IComparable<SpeechEntry>
 	{
 		public short ID { get; set; }
 		public string KeyWord { get; set; }
@@ -201,15 +201,37 @@ namespace Ultima
 		[Browsable(false)]
 		public int Order { get; private set; }
 
-		public SpeechEntry(short id, string keyword, int order)
+        public string[] Keywords { get; }
+
+        public bool CheckStart { get; }
+
+        public bool CheckEnd { get; }
+
+        public SpeechEntry(short id, string keyword, int order)
 		{
 			ID = id;
 			KeyWord = keyword;
 			Order = order;
-		}
-	}
 
-	[StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
+            Keywords = keyword.Split(new[]
+            {
+                '*'
+            }, StringSplitOptions.RemoveEmptyEntries);
+
+            CheckStart = keyword.Length > 0 && keyword[0] == '*';
+            CheckEnd = keyword.Length > 0 && keyword[keyword.Length - 1] == '*';
+        }
+
+        public int CompareTo(SpeechEntry obj)
+        {
+            if (ID < obj.ID)
+                return -1;
+
+            return ID > obj.ID ? 1 : 0;
+        }
+    }
+
+    [StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
 	public unsafe struct SpeechMul
 	{
 		public short id;
